@@ -20,7 +20,7 @@ parser = argparse.ArgumentParser()
 group = parser.add_mutually_exclusive_group()
 group.add_argument(
     '-w', '--winner',
-    help='only count yakus for when the user won the hand',
+    help='only count yakus for when the user won the hand (default)',
     action='store_true')
 group.add_argument(
     '-l', '--loser',
@@ -28,7 +28,7 @@ group.add_argument(
     action='store_true')
 group.add_argument(
     '-a', '--all',
-    help='count yakus from all hands (default)',
+    help='count yakus from all hands',
     action='store_true')
 
 parser.add_argument(

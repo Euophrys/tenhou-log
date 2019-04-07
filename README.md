@@ -26,7 +26,19 @@ XML game logs are stored in a 7-zipped pickle file.
 
 `getlogs.py`
 ---------------
-Finds games to download from Firefox localStorage (by default). It also (on request, not default) tries Chrome localStorage. If directly accessing the localStorage file fails (leveldb access for Chrome fails on windows), it automates opening the browser and gets the localStorage that way: this is ugly but effective. It can also take game IDs or game URLs from the command line. It then calls `tenhoulogs.py` with the list of game IDs. There are several command-line options to change the behaviour.
+Finds games to download from Firefox localStorage (by default). It also (on request, not default) tries Chrome localStorage. If directly accessing the localStorage file fails (leveldb access for Chrome fails on windows), it automates opening the browser and gets the localStorage that way: this is ugly but effective. It can also take game IDs or game URLs from the command line. It then calls `tenhoulogs.py` with the list of game IDs. There are several command-line options to change the behaviour:
+
+| Arguments  | Explanation |
+| ------------- | ------------- |
+| -u MyID / --user MyID  | User IDs, space-separated  |
+| -nf / --no-firefox  | Skips checking Firefox for logs  |
+| -c / --chrome | Checks Chrome for logs |
+| --urls "url1, url2" | URLs of games to load |
+| --ids "id1, id2" | IDs of games to load |
+| --json | Output JSON to the command line |
+| --wait | Wait for 5 minutes before updating, eg to ensure Dropbox is synched |
+| --force | Update all games, even if they've already been retrieved |
+| --no-web | Do not retrieve games from the web |
 
 `tenhoulogs.py`
 ------------------
@@ -43,7 +55,15 @@ Cycles over a bunch of ids, downloads them, and adds them into the store. Stores
 
 `analyseMyLogs.py`
 --------------
-Example use of the log analyser to cycle through many log files (perhaps for several accounts for one person) and aggregate results. Uses `TenhouConfig.py` for account names and work directory, `TenhouDecoder.py` to process the log files, and `TenhouYaku.py` to produce the summary stats.
+Example use of the log analyser to cycle through many log files (perhaps for several accounts for one person) and aggregate results. Uses `TenhouConfig.py` for account names and work directory, `TenhouDecoder.py` to process the log files, and `TenhouYaku.py` to produce the summary stats. There are some command line arguments to change the behaviour:
+
+| Arguments  | Explanation |
+| ------------- | ------------- |
+| -w / --winner | Only count yaku for when the user wins the hand (default) |
+| -l / --loser | Only count yaku for when the user lost the hand |
+| -a / --all | Count yaku from all hands |
+| --since yyyymmdd | Only include games since this date |
+| --before yyyymmdd | Only include games before this date |
 
 `TenhouDecoder.py`
 ---------------------
