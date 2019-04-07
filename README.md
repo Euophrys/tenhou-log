@@ -7,6 +7,18 @@ If you're using chrome, you'll need selenium (`pip install selenium`), and the l
 
 Thanks to [MaxB](https://github.com/maxb/tenhou-log) and [NegativeMjark](https://github.com/NegativeMjark/tenhou-log) for their earlier work on this.
 
+*Setting Up*
+---
+
+If you don't already have Python, download it from [the downloads page.](https://www.python.org/downloads/) Version 3.7.3 will definitely work.
+
+[Download this repo](https://github.com/ApplySci/tenhou-log/archive/master.zip) and unzip it somewhere memorable.
+
+Open a terminal or command prompt in the "tenhou-log-master" folder and enter `pip install -r requirements.txt`. This will install all the dependencies.
+
+Finally, open TenhouConfig.py in a text editor and change the fields to be suitable for you. You can then run the `getlogs.py` file to download your logs, and run `analyseMyLogs.py` to see some stats. Every time you run `getlogs.py`, the new games that are found will be added. It can find the last 40 games played, so if you want complete stats, you will need to run `getlogs.py` at least once every 40 games.
+
+
 *Retrieving and archiving logs*
 ---
 

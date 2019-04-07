@@ -16,6 +16,7 @@ class YakuCounter(Data):
         self.opened = YakuHanCounter(collections.Counter(), collections.Counter())
         self.all = YakuHanCounter(collections.Counter(), collections.Counter())
         self.reach_outcomes = []
+        self.player_index = 0
 
     def addGame(self, game):
         try:
@@ -64,7 +65,7 @@ class YakuCounter(Data):
         self.relevantHands["closed" if agari.closed else "opened"] += 1
         if hasattr(agari, 'yaku'):
             for yaku, han in agari.yaku:
-                # yaku is the name, e.g. "riichi", not an index
+                # yaku is the name, e.g. "Riichi", not an index
                 if han > 0:
                     counterYaku[yaku] += 1
                     counterHan[yaku] += han

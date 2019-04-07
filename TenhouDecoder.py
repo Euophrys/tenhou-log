@@ -32,10 +32,26 @@ class Tile(Data, int):
         return self.TILES[self // 4] + str(self % 4)
 
 class Player(Data):
-    pass
+    def __init__(self):
+        self.name = ""
+        self.rank = ""
+        self.sex = ""
+        self.rate = 0
+        self.connected = True
 
 class Round(Data):
-    pass
+    def __init__(self):
+        self.dealer = 0
+        self.hands = tuple() # Tile tuple tuple
+        self.round = tuple() # Tuple of string (name), int (honba count), int (leftover riichi sticks)
+        self.agari = []
+        self.events = []
+        self.ryuukyoku = False # Can also be a string, if it's special
+        self.ryuukyoku_tenpai = None
+        self.reaches = [0, 0, 0, 0] # What turn it was when each player reached
+        self.reach_turns = [] # What turns reaches happened on
+        self.turns = [0, 0, 0, 0] # What turn it is for each player
+        self.deltas = [] # Score changes
 
 class Meld(Data):
     @classmethod
@@ -96,22 +112,48 @@ class Event(Data):
         self.type = type(self).__name__
 
 class Dora(Event):
-    pass
+    def __init__(self, events):
+        Event.__init__(self, events)
+        self.tile = 0
 
 class Draw(Event):
-    pass
+    def __init__(self, events):
+        Event.__init__(self, events)
+        self.tile = 0
+        self.player = 0
 
 class Discard(Event):
-    pass
+    def __init__(self, events):
+        Event.__init__(self, events)
+        self.tile = None
+        self.player = 0
+        self.connected = True    
 
 class Call(Event):
-    pass
+    def __init__(self, events):
+        Event.__init__(self, events)
+        self.meld = None
+        self.player = 0
 
 class Riichi(Event):
     pass
 
 class Agari(Data):
-    pass
+    def __init__(self):
+        self.type = "" # Either "RON" or "TSUMO"
+        self.player = 0
+        self.hand = tuple() # of Tile
+        self.fu = 0
+        self.points = 0
+        self.limit = "" # eg, "mangan"
+        self.dora = tuple() # of Tile
+        self.machi = tuple() # of Tile
+        self.melds = tuple() # of Meld
+        self.closed = True
+        self.uradora = tuple() # of Tile
+        self.fromPlayer = 0 # only meaningful if type == "RON"
+        self.yaku = tuple() # of strings
+        self.yakuman = tuple() # of strings
 
 class Game(Data):
     RANKS = "新人,9級,8級,7級,6級,5級,4級,3級,2級,1級,初段,二段,三段,四段,五段,六段,七段,八段,九段,十段,天鳳位".split(",")
@@ -193,11 +235,17 @@ class Game(Data):
     def __init__(self, lang, suppress_draws=False):
         self.suppress_draws = suppress_draws
         self.lang = lang
+        self.gameType = ""
+        self.lobby = ""
+        self.players = []
+        self.round = Round()
+        self.rounds = []
+        self.owari = ""
 
     def tagGO(self, tag, data):
-        self.gameType = data["type"]
         # The <GO lobby=""/> attribute was introduced at some point between
         # 2010 and 2012:
+        self.gameType = data["type"]
         self.lobby = data.get("lobby")
 
     def tagUN(self, tag, data):
@@ -233,13 +281,6 @@ class Game(Data):
         self.round.dealer = int(data["oya"])
         self.round.hands = tuple(self.decodeList(data[hand], Tile) for hand in self.HANDS if hand in data and data[hand])
         self.round.round = self.ROUND_NAMES[name % len(self.ROUND_NAMES)], combo, riichi
-        self.round.agari = []
-        self.round.events = []
-        self.round.ryuukyoku = False
-        self.round.ryuukyoku_tenpai = None
-        self.round.reaches = []
-        self.round.reach_turns = []
-        self.round.turns = [0, 0, 0, 0]
 
         Dora(self.round.events).tile = Tile(dora)
 
