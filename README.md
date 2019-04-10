@@ -81,6 +81,20 @@ Taken directly from the [Tenhou UI translator](https://gitlab.com/zefiris/tenhou
 ----------
 dumps out complicated objects as plain text
 
+`searchLogs.py`
+---------------------
+Outputs all game IDs that suit the search criteria. By default, this will just output all of the games, but you can filter them using command line arguments:
+
+| Arguments  | Explanation |
+| ------------- | ------------- |
+| --since yyyymmdd | Only include games since this date, exclusive |
+| --before yyyymmdd | Only include games before this date, inclusive |
+| --player "Player1 Player2" | Only include games where at least one of these players played |
+| --lobby "0" | Only include games played in this lobby |
+| --yaku "Ryanpeikou" | Only include games where a player scored this yaku |
+| --sanma | Only include three-player games |
+| --no-sanma | Only include four-player games. Mutually exclusive with --sanma |
+
 ---
 
 Log Format
